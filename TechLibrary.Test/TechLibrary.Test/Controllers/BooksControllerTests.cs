@@ -41,5 +41,19 @@ namespace TechLibrary.Controllers.Tests
             //  Assert
             _mockBookService.Verify(s => s.GetBooksAsync(), Times.Once, "Expected GetBooksAsync to have been called once");
         }
+
+        [Test()]
+        public async Task GetRequestedPageTest()
+        {
+            //  Arrange
+            _mockBookService.Setup(b => b.GetBooksByPageAsync(1, 10)).Returns(Task.FromResult(It.IsAny<List<Domain.Book>>()));
+            var sut = new BooksController(_mockLogger.Object, _mockBookService.Object, _mockMapper.Object);
+
+            //  Act
+            var result = await sut.GetRequestedPage(1, 10);
+
+            //  Assert
+            _mockBookService.Verify(s => s.GetBooksByPageAsync(1, 10), Times.Once, "Expected GetBooksAsync to have been called once" );
+        }
     }
 }

@@ -35,8 +35,7 @@
         methods: {
             dataContext(ctx, callback) {
                 axios.get("https://localhost:5001/books")
-                    .then(response => {
-                        
+                    .then(response => {                        
                         callback(response.data);
                     });
             }

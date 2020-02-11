@@ -11,12 +11,12 @@
 </template>
 
 <script>
-    import Home from './components/Home.vue';
+    import PagedHome from './components/PagedHome.vue';
 
     export default {
         name: 'app',
         components: {
-            Home
+            PagedHome
         }
     };
 </script>

@@ -47,5 +47,15 @@ namespace TechLibrary.Controllers
 
             return Ok(bookResponse);
         }
+
+        [HttpGet("{page}/{pageSize}")]
+        public async Task<IActionResult> GetRequestedPage(int page, int pageSize)
+        {
+            _logger.LogInformation($"Get page number {page} with {pageSize} number of records");
+            var books = await _bookService.GetBooksByPageAsync(page, pageSize);
+            var bookResponse = _mapper.Map<List<BookResponse>>(books);
+
+            return Ok(bookResponse);
+        }
     }
 }
