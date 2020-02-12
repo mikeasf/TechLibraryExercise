@@ -4,7 +4,7 @@
 
         <h1>{{ msg }}</h1>
 
-        <b-table striped hover :items="pageData" :fields="fields"  responsive="sm">
+        <b-table striped hover :items="dataContext" :fields="fields"  responsive="sm" >
             <template v-slot:cell(thumbnailUrl)="data">
                 <b-img :src="data.value" thumbnail fluid></b-img>
             </template>
@@ -44,10 +44,8 @@
             visibleItemsPerPageCount: 10
         },
         props: {
-            msg: String
-            
+            msg: String            
         },
-
          data: () => ({
 
                 fields: [
@@ -72,7 +70,8 @@
 
              } catch (error) {
              throw error;
-           }
+             }
+
         },
 
         methods: {
@@ -93,17 +92,39 @@
                     }
                 }
 
+
+
             },
 
-            pageData: function () {
+            dataContext(cts, callback) {
 
-                     axios.get(`https://localhost:5001/books/?page=${this.currentPage}&pageSize=${
-                    this.$options.static.visibleItemsPerPageCount}`).then(response => {
+                try {
 
-                        return response.data;
+                    if (this.pageCount == 0) {
 
-                    });
-                 }
+                   
+                            axios.get("https://localhost:5001/books").then(response => {
+
+                                this.pageCount = Math.ceil(
+                                    response.data.length / this.$options.static.visibleItemsPerPageCount);
+                            });
+                  
+
+                         axios.get(`https://localhost:5001/books/?page=${this.currentPage}&pageSize=
+                                    ${this.$options.static.visibleItemsPerPageCount}`).then(response => {
+
+                                        callback(response.data);
+                        });
+
+                     }
+
+                  } catch (error) {
+                           throw error;
+                  }
+
+
+            }
+
         }
 
        
